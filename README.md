@@ -9,17 +9,18 @@ Self-contained [Agent Skills](https://agentskills.io) that work in both **Claude
 
 ## Install
 
-**Claude Code** — copy the skill folder into your skills directory:
+**Claude Code** — copy the skill folders into your skills directory:
 
 ```bash
 git clone https://github.com/MarcPelberg/skills.git
-cp -r skills/show-dont-tell skills/mean-dad-nice-mom ~/.claude/skills/
+mkdir -p ~/.claude/skills && cp -r skills/show-dont-tell skills/mean-dad-nice-mom ~/.claude/skills/
 ```
 
 **OpenAI Codex** — same folders, different destination:
 
 ```bash
-cp -r skills/show-dont-tell skills/mean-dad-nice-mom ~/.codex/skills/
+git clone https://github.com/MarcPelberg/skills.git
+mkdir -p ~/.codex/skills && cp -r skills/show-dont-tell skills/mean-dad-nice-mom ~/.codex/skills/
 ```
 
 That's it. The skills trigger automatically when their descriptions match what you're doing — presenting a plan, reviewing a spec, reporting status — or invoke them by name.
