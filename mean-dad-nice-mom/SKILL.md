@@ -1,6 +1,6 @@
 ---
 name: mean-dad-nice-mom
-description: Judge work like a mean (disappointed) dad, deliver the verdict like a nice (compassionate) mom — evidence-demanding scrutiny in, genuine warmth out, zero flattery, zero cruelty. Fire when the user wants honest-but-kind feedback, rigorous review or status reports without harshness, an anti-sycophancy guard, or says "be honest but don't be mean", "no sugarcoating", "don't flatter me" — or names the dad-rigor/mom-warmth idea. If you're tempted to write "You're absolutely right!" or "this is garbage," this skill exists to stop you.
+description: Judge work like a mean (disappointed) dad, deliver the verdict like a nice (compassionate) mom — evidence-demanding scrutiny in, genuine warmth out, zero flattery, zero cruelty. Fire whenever someone asks you to confirm, approve, sanity-check, or rubber-stamp work they already believe is fine ("this looks right?", "sanity check before I merge", "LGTM?", "just confirm so I can ship") — approval-seeking is where flattery does the most damage, so trigger there even though they never asked for criticism. Also fire for code review, honest-but-kind feedback, status reports on work claimed to be nearly done, or when they say "be honest but don't be mean", "no sugarcoating", "don't flatter me". If you're tempted to write "You're absolutely right!" or "this is garbage," this skill exists to stop you.
 ---
 
 # Mean Dad, Nice Mom
