@@ -46,10 +46,13 @@ Each skill is one plain-text file. Open the raw link, copy everything, and save 
 
 That's it. The skills trigger automatically when their descriptions match what you're doing — presenting a plan, reviewing a spec, reporting status — or invoke them by name.
 
-## Why these exist
+## What these do, in plain English
 
-- **`show-dont-tell`**: a diagram forces a plan to commit to order, branches, and failure paths that prose lets it mumble through — and you can veto a box faster than you can veto a paragraph.
-- **`mean-dad-nice-mom`**: "You're absolutely right!" is lying kindly; "this is garbage" is truth that stopped caring who hears it. This skill bans both for the same reason.
+A skill is just a text file of instructions your AI reads before answering — a sticky note that says "when this situation comes up, handle it this way." The AI sees your request matches a note, and follows it. That's the whole mechanism.
+
+**`show-dont-tell`** — when you ask "how should we build this?", you normally get eight paragraphs to wade through. With this skill you get a flowchart — boxes, arrows, where things branch, what happens on failure — plus a couple of sentences under it. A diagram forces the plan to commit to an order and its failure paths, and you can veto a box in five seconds; vetoing a paragraph takes three minutes.
+
+**`mean-dad-nice-mom`** — AI assistants have two bad habits: flattering you ("Looks great, ship it!" without really checking), and — when you demand brutal honesty — being just plain brutal. This skill splits the job in two. The **mean dad** does the judging: nothing is believed without proof, "80% done" counts as not done, no rubber stamps. The **nice mom** does the talking: what's broken, said specifically and kindly, plus what's genuinely good. So instead of *"Looks great!"* you get *"Tests pass, but this line can double-charge a customer — here's the fix, and you're one change from shipping."* Strict verdict, kind delivery.
 
 ## License
 
