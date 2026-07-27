@@ -41,7 +41,9 @@ instead of decorating it.
 The mermaid block comes first. Under it, at most ~5 lines of prose: the status or
 verdict up front, the one risky step, the blocker if any, and the exact ask ("approve
 and I start on A"). If the chaser outweighs the diagram, cut the chaser — a diagram
-bolted under standalone prose is decoration, and you did it wrong.
+bolted under standalone prose is decoration, and you did it wrong. If another rule
+you're following says the status goes in the opening line, this layout satisfies it:
+the chaser's first line IS the status line — diagram first, verdict immediately under.
 
 ## Syntax safety — a diagram that doesn't render is worse than prose
 
