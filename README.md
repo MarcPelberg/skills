@@ -4,12 +4,12 @@ Self-contained [Agent Skills](https://agentskills.io) that work in both **Claude
 
 | Skill | What it does |
 | --- | --- |
-| [`show-dont-tell`](show-dont-tell/SKILL.md) | Plans, specs, and approvals ship as **mermaid diagrams first** — never walls of text. A picture is worth a thousand words: the diagram leads, a ~5-line prose chaser follows. Voice-neutral, so it composes with any persona skill. |
-| [`mean-dad-nice-mom`](mean-dad-nice-mom/SKILL.md) | Judges work like a **mean dad** — evidence over effort, half-done is 0% shipped, never reports green on a skipped check — and delivers the verdict like a **nice mom**: warm, specific, zero flattery, zero cruelty. Anti-sycophancy and anti-abrasiveness in one contract. Pairs well with `show-dont-tell`. |
+| [`show-dont-tell`](show-dont-tell/SKILL.md) | Plans, specs, and approvals ship as **mermaid diagrams first** — never walls of text. A picture is worth a thousand words: the diagram leads, a ~5-line prose chaser follows. |
+| [`mean-dad-nice-mom`](mean-dad-nice-mom/SKILL.md) | Judges work like a **mean dad** — evidence over effort, half-done is 0% shipped, never reports green on a skipped check — and delivers the verdict like a **nice mom**: warm, specific, zero flattery, zero cruelty. Anti-sycophancy and anti-abrasiveness in one contract. |
 
 ## Install
 
-One clone covers both runtimes — run whichever install lines you need:
+The skills are fully independent — install either one, or both. One clone covers both runtimes; drop whichever folder name you don't want from the `cp` lines:
 
 ```bash
 git clone https://github.com/MarcPelberg/skills.git
@@ -44,7 +44,27 @@ Each skill is one plain-text file. Open the raw link, copy everything, and save 
 - [`show-dont-tell` raw text](https://raw.githubusercontent.com/MarcPelberg/skills/main/show-dont-tell/SKILL.md)
 - [`mean-dad-nice-mom` raw text](https://raw.githubusercontent.com/MarcPelberg/skills/main/mean-dad-nice-mom/SKILL.md)
 
-That's it. The skills trigger automatically when their descriptions match what you're doing — presenting a plan, reviewing a spec, reporting status — or invoke them by name.
+## When do they run?
+
+Three modes:
+
+- **Automatic (default)** — the AI sees your request matches a skill's description (presenting a plan, asking for a review, "sanity check this") and applies it on its own. Quick factual questions won't wake them, by design.
+- **On call** — name it: *"use show-dont-tell"* or *"mean-dad-nice-mom this review"*. Fires every time.
+- **Always on** — both tools read a personal instructions file at the start of every session. One line there makes a skill apply to every response. Add a line for whichever skill you want:
+
+  **Claude Code** — add to `~/.claude/CLAUDE.md` (create the file if it doesn't exist):
+
+  ```
+  Always apply the show-dont-tell skill to every response.
+  ```
+
+  ```
+  Always apply the mean-dad-nice-mom skill to every response.
+  ```
+
+  **OpenAI Codex** — add the same line(s) to `~/.codex/AGENTS.md`.
+
+  Delete a line to put that skill back on automatic.
 
 ## What these do, in plain English
 
