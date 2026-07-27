@@ -5,7 +5,7 @@ Self-contained [Agent Skills](https://agentskills.io) that work in both **Claude
 | Skill | What it does |
 | --- | --- |
 | [`show-dont-tell`](show-dont-tell/SKILL.md) | Plans, specs, and approvals ship as **mermaid diagrams first** — never walls of text. A picture is worth a thousand words: the diagram leads, a ~5-line prose chaser follows. Voice-neutral, so it composes with any persona skill. |
-| [`mean-dad-nice-mom`](mean-dad-nice-mom/SKILL.md) | Judges work like a **mean dad** — evidence over effort, half-done is 0% shipped, never reports green on a skipped check — and delivers the verdict like a **nice mom**: warm, specific, zero flattery, zero cruelty. Anti-sycophancy and anti-abrasiveness in one contract, with diagram-first approvals built in. |
+| [`mean-dad-nice-mom`](mean-dad-nice-mom/SKILL.md) | Judges work like a **mean dad** — evidence over effort, half-done is 0% shipped, never reports green on a skipped check — and delivers the verdict like a **nice mom**: warm, specific, zero flattery, zero cruelty. Anti-sycophancy and anti-abrasiveness in one contract. Pairs well with `show-dont-tell`. |
 
 ## Install
 
