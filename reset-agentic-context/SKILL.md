@@ -24,7 +24,9 @@ writing:
 3. For "every repository" or the complete scope, enumerate repositories only beneath
    the active workspace/project roots supplied by the environment or user. Expand
    each common Git directory with `git worktree list --porcelain`, including
-   registered worktree paths outside those roots. If the current Git root is directly
+   registered worktree paths outside those roots. Deduplicate by canonical common
+   Git directory and then by canonical worktree path: a discovered project-root path
+   may already be one worktree in a larger family, not an independent repository. If the current Git root is directly
    beneath a conventional repository collection directory named `projects`, `repos`,
    `src`, `work`, or `code`, promote that parent directory to an active project root
    for the complete scope. Never promote a filesystem root or the user's home
@@ -86,6 +88,9 @@ filesystem identity and ACL tools:
    user SID, and every access-rule SID is either the current user or
    `S-1-5-32-544`.
 
+Use `$acl.GetOwner([Security.Principal.SecurityIdentifier])` for the owner check;
+`$acl.Owner` can be a display string and does not reliably expose `Translate`.
+
 Translate ACL identities to
 `System.Security.Principal.SecurityIdentifier`, not `WindowsIdentity`. A failed
 PowerShell identity conversion or malformed verification command does not prove ACL
@@ -97,6 +102,13 @@ each other and outside every source, repository, Git administration directory, g
 configuration root, protected path, installed skill root, and mutation-allowlisted
 tree. If a default overlaps, choose a safe writable user-state directory outside the
 allowlist. If no disjoint persistent destination exists, do not mutate.
+
+Before moving a Windows directory, compare its longest descendant path with the
+destination prefix and use compact hashed worktree IDs in quarantine paths. If that
+destination would exceed supported path traversal limits, rehome the exact directory
+atomically to a shorter, explicitly named, ACL-protected local quarantine root. Journal
+the path-length failure, revised rollback, and post-move verification; an overlong
+post-move enumeration alone is not evidence of file loss.
 
 Before the first mutation, durably create a write-ahead journal. Before each move or
 edit, record:
@@ -136,6 +148,13 @@ change refs, rewrite history, uninstall software, or empty quarantine. The only
 uninstall exception is an exact user-approved plugin removed through its supported
 plugin controller; never infer exact plugin targets from "all" or "full reset."
 
+Treat Git lifecycle cleanup as a separate operation. If a user also says "clean up
+branches" or "clean up worktrees," inventory branch attachment, local merge state,
+dirty state, and protected ownership, but do not delete a ref or worktree from its
+name, age, or agent prefix. Require a separate explicit retention rule such as
+"delete only locally merged, unattached branches"; never treat local merge state as
+proof that a remote is current without a fetch.
+
 If an eligible AI configuration embeds a credential, preserve its exact original bytes
 only in protected backup storage. Never print or transform the credential.
 
@@ -160,6 +179,9 @@ this skill, each package directory, and their ancestors from parent-level moves.
 For every allowlisted repository or worktree:
 
 1. Resolve the absolute root and `git rev-parse --git-common-dir`.
+   Normalize path separators and case before classifying ownership. Treat paths under
+   temporary-agent roots and `.claude/worktrees` as application-managed and
+   report-only unless the owning application retires them first.
 2. Record branch or detached HEAD and
    `git status --porcelain=v2 --branch --untracked-files=all`.
 3. Skip mutation when merge, rebase, cherry-pick, revert, bisect, `git am`, sequencer
@@ -223,6 +245,11 @@ Match only these Aider configuration files:
 - `.aider.model.metadata.json`
 
 Keep other `.aider*` history, input, cache, or unknown files report-only.
+
+Do not move an empty candidate directory merely to make the tree look clean. Treat a
+`.claude` root containing `worktrees`, locks, settings, hooks, or unknown children as
+mixed-purpose: inspect and move only individually eligible leaves, and skip it when
+that classification is incomplete.
 
 For `.claude/settings.json`, `.claude/settings.local.json`, and
 `.codex/config.toml`, edit only the allowlisted keys in the product sections below.
@@ -420,7 +447,8 @@ When user-global cleanup is in scope:
 After mutation:
 
 1. Rescan every in-scope repository and worktree.
-2. Recheck Git status and diff; confirm every new change maps to a journaled candidate.
+2. Recheck Git status and diff; distinguish pre-existing dirty paths from reset-created
+   changes, and confirm every new change maps to a journaled candidate.
 3. Confirm no protected path or key changed.
 4. Rescan user-global roots and list remaining active or external context.
 5. Validate every edited config and automatically restore invalid edits.
