@@ -1,0 +1,7 @@
+interface:
+  display_name: "Reset Agentic Context"
+  short_description: "Reset AI context and tooling safely"
+  default_prompt: "Use $reset-agentic-context to perform a recoverable clean-slate reset for the repositories and local AI settings I name."
+
+policy:
+  allow_implicit_invocation: false
