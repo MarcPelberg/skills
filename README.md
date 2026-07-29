@@ -14,7 +14,7 @@ The first three live in this repository. Superpowers and Ponytail remain upstrea
 
 [`mean-dad-nice-mom`](mean-dad-nice-mom/SKILL.md) — **Marc-made.** AI assistants have two bad habits: flattering you ("Looks great, ship it!" without really checking), and — when you demand brutal honesty — being just plain brutal. This skill splits the job in two. The **mean dad** does the judging: nothing is believed without proof, "80% done" counts as not done, no rubber stamps. The **nice mom** does the talking: what's broken, said specifically and kindly, plus what's genuinely good. So instead of *"Looks great!"* you get *"Tests pass, but this line can double-charge a customer — here's the fix, and you're one change from shipping."* Strict verdict, kind delivery.
 
-[`reset-agentic-context`](reset-agentic-context/SKILL.md) — **Marc-made.** Safely starts an AI-assisted repository over without pretending that deleting every hidden folder is harmless. It inventories active instructions, memories, skills, hooks, plugins, and MCP servers; moves eligible items into recoverable quarantine; journals rollback before each change; and protects source code, Git, credentials, sessions, safety policy, and application runtimes. It can reset one repository or, only when explicitly requested, the current user's Codex and Claude settings.
+[`reset-agentic-context`](reset-agentic-context/SKILL.md) — **Marc-made.** Safely starts AI-assisted work over without pretending that deleting every hidden folder is harmless. It inventories active instructions, memories, skills, hooks, plugins, and MCP servers; moves eligible items into recoverable quarantine; journals rollback before each change; and protects source code, Git, credentials, sessions, safety policy, and application runtimes. Ask for the current repository only, name specific repositories, or request a **full reset** to include every repository, every registered non-app-managed worktree, and the current user's Codex and Claude global settings.
 
 [Superpowers](https://github.com/obra/superpowers) — **Third-party.** A structured development workflow for coding agents: brainstorming, planning, test-driven development, debugging, code review, and verification. Install it from its official marketplace so it stays current.
 
@@ -27,7 +27,7 @@ The five are independent — use whichever combination fits your work.
 Three modes:
 
 - **Automatic (default)** — `show-dont-tell` and `mean-dad-nice-mom` run when the AI sees a matching request. Quick factual questions won't wake them, by design. `reset-agentic-context` never runs implicitly.
-- **On call** — name it: *"use show-dont-tell"*, *"mean-dad-nice-mom this review"*, or, in Codex, *"use $reset-agentic-context in this repository only"*. Fires every time.
+- **On call** — name it: *"use show-dont-tell"*, *"mean-dad-nice-mom this review"*, or, in Codex, *"use $reset-agentic-context in this repository only"*. For the complete scope, say *"use $reset-agentic-context for a full reset across every repository and worktree plus Codex and Claude global settings."* Fires every time.
 - **Always on** — both tools read a personal instructions file at the start of every session. This mode is intended for the first two skills, not the reset skill. Add a line for whichever one you want:
 
 Superpowers and Ponytail use their own plugin activation and hook rules after installation; their official setup is below.

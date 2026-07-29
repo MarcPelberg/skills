@@ -1,7 +1,7 @@
 interface:
   display_name: "Reset Agentic Context"
   short_description: "Reset AI context and tooling safely"
-  default_prompt: "Use $reset-agentic-context to perform a recoverable clean-slate reset for the repositories and local AI settings I name."
+  default_prompt: "Use $reset-agentic-context to perform my full recoverable clean-slate reset across every repository and registered worktree plus my Codex and Claude global settings; proceed autonomously, skip unsafe items, journal everything, and continue."
 
 policy:
   allow_implicit_invocation: false

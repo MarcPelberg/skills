@@ -1,6 +1,6 @@
 ---
 name: reset-agentic-context
-description: Perform an explicit, recoverable clean-slate reset of AI coding context for one or more repositories and, only when requested, the current user's Codex and Claude configuration. Use when a user asks to remove or disable inherited AI instructions, memories, prompts, custom skills or agents, hooks, plugins, MCP servers, and related agent-tool configuration while preserving source code, Git history, credentials, sessions, safety policy, and application runtimes. Never invoke implicitly for ordinary cleanup.
+description: Perform an explicit, recoverable clean-slate reset of AI coding context for one repository, every repository and registered worktree, or the current user's Codex and Claude global configuration. Use when a user asks to remove or disable inherited AI instructions, memories, prompts, custom skills or agents, hooks, plugins, MCP servers, and related agent-tool configuration while preserving source code, Git history, credentials, sessions, safety policy, and application runtimes. Treat an explicit "full reset" or "reset everything" request as the complete repository, worktree, Codex-global, and Claude-global scope defined below. Never invoke implicitly for ordinary cleanup.
 ---
 
 # Reset Agentic Context
@@ -14,21 +14,40 @@ Build both an exact path allowlist and an exact artifact-category allowlist befo
 writing:
 
 1. Use repository roots named by the user.
-2. When the request explicitly asks for user-global configuration only, include no
-   repository. When no target type is stated at all, default to the current Git
-   repository only.
-3. Include other registered worktrees only when the user explicitly includes all
-   worktrees or names their paths. Keep application-managed worktrees report-only.
-4. Include Codex user-global settings only for explicit wording such as "Codex user
+2. Treat explicit wording such as "full reset," "full clean slate," "reset
+   everything," or "reset all worktrees and Codex and Claude global settings" as
+   authorization for all agentic-context categories across:
+   - every Git repository under the active workspace or project roots;
+   - every registered worktree discovered from those repositories; and
+   - the current user's Codex and Claude global settings.
+   Do not collapse this complete scope back to the current repository.
+3. For "every repository" or the complete scope, enumerate repositories only beneath
+   the active workspace/project roots supplied by the environment or user. Expand
+   each common Git directory with `git worktree list --porcelain`, including
+   registered worktree paths outside those roots. If the current Git root is directly
+   beneath a conventional repository collection directory named `projects`, `repos`,
+   `src`, `work`, or `code`, promote that parent directory to an active project root
+   for the complete scope. Never promote a filesystem root or the user's home
+   directory implicitly, and do not scan an entire drive. Environment-supplied
+   visualization, cache, session, temporary-output, and other application-owned roots
+   are report-only unless the user explicitly names one as a repository target. Keep
+   application-managed, temporary-agent, and Codex-managed worktrees report-only.
+4. When the request explicitly asks for user-global configuration only, include no
+   repository. When no target type or complete-scope wording is stated, default to
+   the current Git repository only.
+5. Include other registered worktrees only when the user explicitly includes all
+   worktrees, every repository, the complete scope, or names their paths.
+6. Include Codex user-global settings only for explicit wording such as "Codex user
    settings" or "Codex global settings." Include Claude user-global settings only for
    equivalent Claude wording. Include both only when the user explicitly says all
-   local AI settings or names both products. The word "local" alone is insufficient.
-5. Map requested categories independently: instructions/rules, memories, skills and
+   local AI settings, names both products, or requests the complete scope. The word
+   "local" alone is insufficient.
+7. Map requested categories independently: instructions/rules, memories, skills and
    agents, hooks, plugins, MCP/tools, or all agentic context. A category-specific
    request authorizes only that category and the minimum setting change required to
    deactivate it. "Full clean-slate reset" authorizes all listed categories inside
    the path scope.
-6. Treat cloud memories, hosted connectors, organization policy, managed settings,
+8. Treat cloud memories, hosted connectors, organization policy, managed settings,
    and extension installation state as report-only.
 
 An explicit request to execute the reset authorizes safe in-scope mutations. Do not
@@ -51,6 +70,24 @@ Require local, non-reparse destinations. Restrict both roots to the current user
 platform administrators before writing; use owner-only mode on POSIX. Store memories,
 histories, mixed-purpose settings, and files that may contain secrets only in protected
 backup storage.
+
+On Windows, create each empty root before applying its ACL, then use the native
+filesystem identity and ACL tools:
+
+1. Resolve the current identity with
+   `[Security.Principal.WindowsIdentity]::GetCurrent()`.
+2. Run `icacls <root> /inheritance:r`.
+3. Grant only `<current-identity>:(OI)(CI)F` and
+   `*S-1-5-32-544:(OI)(CI)F` (the built-in Administrators SID).
+4. Verify with `Get-Acl` that inheritance is disabled, the owner SID is the current
+   user SID, and every access-rule SID is either the current user or
+   `S-1-5-32-544`.
+
+Translate ACL identities to
+`System.Security.Principal.SecurityIdentifier`, not `WindowsIdentity`. A failed
+PowerShell identity conversion or malformed verification command does not prove ACL
+enforcement is unavailable. Correct the verification and retry. Halt mutations only
+when the native ACL operations or the final ACL assertions actually fail.
 
 Canonicalize both destinations before creating them. Require them to be disjoint from
 each other and outside every source, repository, Git administration directory, global
@@ -221,6 +258,12 @@ still matches the journaled post-edit hash. If it changed afterward, preserve th
 live file and backup separately and report that manual reconciliation is required.
 No-overwrite rollback applies to moved artifacts; compare-and-swap rollback applies
 to edited configs.
+
+If verification detects a post-edit live hash different from the journaled successful
+post-edit hash, compare structural paths without printing values. Treat protected-key
+changes made after the transaction as concurrent application state: preserve the live
+file and protected backup, keep any still-valid reset keys, and block automatic
+rollback instead of overwriting the newer protected state.
 
 Skip instead of guessing when the format, schema, ownership, diff, or transaction
 guarantee is ambiguous.
