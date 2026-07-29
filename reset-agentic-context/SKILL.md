@@ -48,7 +48,10 @@ writing:
    deactivate it. "Full clean-slate reset" authorizes all listed categories inside
    the path scope.
 8. Treat cloud memories, hosted connectors, organization policy, managed settings,
-   and extension installation state as report-only.
+   and extension installation state as report-only. Broad reset wording alone does
+   not authorize uninstalling a plugin or disconnecting a connector. When a live
+   plugin contributes nonretained skills, hooks, agents, or tools, inventory its
+   exact name and request the one exact approval required by the plugin controller.
 
 An explicit request to execute the reset authorizes safe in-scope mutations. Do not
 pause for a manifest review when the user says to proceed autonomously. A host-required
@@ -122,13 +125,16 @@ Never change:
 - model, provider, trust, sandbox, approval, permission, deny, network, safety,
   telemetry, UI, or runtime settings;
 - managed or organization policy;
-- application, extension, or plugin binaries, caches, databases, or global storage;
+- application, extension, or plugin binaries, caches, databases, or global storage,
+  except an exact user-approved plugin bundle handled by the removal procedure below;
 - system-owned skills such as `.system`;
 - this `reset-agentic-context` skill and its package ancestors; or
 - enabled recurring automations and their minimum proven dependencies.
 
 Do not fetch, pull, checkout, merge, rebase, stash, commit, push, create branches,
-change refs, rewrite history, uninstall software, or empty quarantine.
+change refs, rewrite history, uninstall software, or empty quarantine. The only
+uninstall exception is an exact user-approved plugin removed through its supported
+plugin controller; never infer exact plugin targets from "all" or "full reset."
 
 If an eligible AI configuration embeds a credential, preserve its exact original bytes
 only in protected backup storage. Never print or transform the credential.
@@ -302,8 +308,37 @@ Allow only these Codex config changes:
 - set an existing nonretained plugin-scoped MCP `enabled` field to `false`.
 
 Preserve `.system`, this skill, retained dependencies, command safety policy, auth,
-sessions, history, state, logs, worktrees, plugin packages, and caches. Report other
-installed plugin or connector exposure instead of deleting it.
+sessions, history, state, logs, and worktrees.
+
+Inventory plugin-provided context separately from dormant cache:
+
+1. Query the supported plugin controller when available and record exact installed,
+   enabled, connected, required/default, and removable status without printing
+   credentials. Record those fields separately and fail closed when controller state,
+   live tools, and on-disk bundles disagree.
+2. Count `SKILL.md` files and inspect hooks, agents, prompts, and MCP declarations
+   beneath each installed plugin bundle. Include these in the remaining-context
+   report and visible skill-registry count.
+3. Preserve plugin packages and caches unless the user explicitly approves each
+   exact plugin name for removal. Before uninstall, record the canonical plugin ID,
+   marketplace/version, and supported reinstall path when available. If no supported
+   rollback exists, disclose that controller removal is not fully recoverable and
+   require explicit approval of that limitation. Use the supported uninstall/remove
+   control first; a cache rollback does not restore controller or connector state.
+   Mark any run containing that approved exception as partially nonrecoverable, not
+   a fully recoverable reset.
+4. After a successful uninstall, rescan the exact bundle path. If the cache remains
+   and the user explicitly asked to delete that exact bundle, move only its locally
+   owned, non-reparse version directory into protected quarantine after journaling
+   its tree hash. Never edit cache internals, delete an entire marketplace/cache
+   root, or touch authentication storage.
+5. If the controller reports a required/default bundle as not installed or
+   nonremovable, do not claim it was uninstalled. Report the boundary. Quarantine its
+   exact cache version only after separate explicit approval, and warn that the
+   application may restore it on restart or fail until it is restored.
+
+Uninstalling a plugin does not prove that a bundled connector was disconnected.
+Report connector exposure separately and require exact connector-disconnect approval.
 
 ## Reset Claude user context
 
@@ -390,11 +425,17 @@ After mutation:
 4. Rescan user-global roots and list remaining active or external context.
 5. Validate every edited config and automatically restore invalid edits.
 6. Confirm memory use is inactive where editable.
-7. Finalize the journal, skipped-target list, remaining-surface list, and exact
+7. Count discoverable skills across repository, user, system, admin, and plugin
+   roots. When possible, compare that inventory with the live `/skills` or slash
+   registry after a fresh task. Treat plugin-provided skills and active context in
+   protected or application-managed worktrees as residual context.
+8. Finalize the journal, skipped-target list, remaining-surface list, and exact
    no-overwrite rollback commands.
-8. Report results per repository and per product, plus the quarantine roots.
-9. State that already-running tasks retain loaded context; require fresh tasks or an
+9. Report results per repository and per product, plus the quarantine roots.
+10. State that already-running tasks retain loaded context; require fresh tasks or an
    application restart before evaluating the reset.
 
 Never claim remote branches are current without fetching. Never claim cloud,
-managed, or inaccessible state was reset.
+managed, or inaccessible state was reset. Never call the result "clean" while any
+nonretained active plugin skill/tool, ambient repository instruction, or protected
+worktree context remains; say exactly which boundary prevented complete cleanup.
